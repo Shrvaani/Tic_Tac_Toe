@@ -1,4 +1,4 @@
-## Running Tic-Tac-Toe Game:
+## Tic-Tac-Toe Game:
 
 # Using Python IDLE:
 * Download Python 3.11 with Python IDLE from Python website.
