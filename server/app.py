@@ -114,6 +114,9 @@ def ensure_room_structure(room: Dict[str, Any]) -> Dict[str, Any]:
 def root():
     return {"message": "Tic Tac Toe Backend Active!"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/create")
 def create_room():
