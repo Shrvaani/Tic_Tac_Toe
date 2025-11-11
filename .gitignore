@@ -1,0 +1,14 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Env / secrets
+.env
+serviceAccountKey.json
+socket_env/
+
+# DB files
+*.db
