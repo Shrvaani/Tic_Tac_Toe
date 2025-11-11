@@ -1,2 +1,4 @@
-numpy==1.21.5
-tk
+fastapi
+uvicorn
+firebase-admin
+python-dotenv
