@@ -1,10 +1,8 @@
 // src/api.js
 
-// Dynamically pick backend URL based on environment
 const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://tictactoe-production-85ab.up.railway.app" // Railway backend
-    : "http://127.0.0.1:8000"; // Local backend for dev
+  process.env.REACT_APP_API_URL ||
+  "https://tictactoe-production-85ab.up.railway.app";// Local backend for dev
 
 // Generic fetch handler with error handling
 async function safeFetch(url, options = {}) {
