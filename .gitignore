@@ -12,3 +12,5 @@ socket_env/
 
 # DB files
 *.db
+# macOS system files
+.DS_Store
