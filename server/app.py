@@ -54,11 +54,13 @@ initialize_app(cred, {"databaseURL": FIREBASE_DB_URL})
 # -------------------------------
 # FastAPI Setup
 # -------------------------------
-app = FastAPI(title="Tic Tac Toe Backend")  # ✅ Define app first
+app = FastAPI(title="Tic Tac Toe Backend")
 
+# ✅ Allow both local dev and deployed frontend origins
 origins = [
     "http://localhost:3000",
-    "https://tic-tac-toe-ten-topaz.vercel.app",  # ✅ Your deployed frontend
+    "https://tic-tac-toe-ten-topaz.vercel.app",
+    "https://tic-tac-toe-ten-topaz.vercel.app/",  # optional trailing slash version
 ]
 
 app.add_middleware(
@@ -68,6 +70,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ✅ Preflight handler (fixes browser CORS pre-check)
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str = None):
+    return {"message": "CORS preflight OK"}
+
 
 # -------------------------------
 # Helper Functions
