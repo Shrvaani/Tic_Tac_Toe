@@ -1,5 +1,5 @@
 // src/api.js
-const BASE_URL = "tictactoe-production-85ab.up.railway.app";
+const BASE_URL = "https://tictactoe-production-85ab.up.railway.app";
 
 export async function createRoom() {
   const res = await fetch(`${BASE_URL}/create`, { method: "POST" });
