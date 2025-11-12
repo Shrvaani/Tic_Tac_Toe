@@ -1,6 +1,6 @@
 // src/utils/api.js
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://tictactoe-production-85ab.up.railway.app";
 const FIREBASE_DB =
   "https://tictactoe-multiplayer-581b6-default-rtdb.asia-southeast1.firebasedatabase.app";
 
