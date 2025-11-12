@@ -6,18 +6,18 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 
 # -------------------------------
-# AI Utilities
+# AI Utilities (Fallback Safe)
 # -------------------------------
 try:
     from ai.minimax import find_best_move, check_winner
 except Exception:
     def check_winner(board):
         combos = [
-            (0,1,2),(3,4,5),(6,7,8),
-            (0,3,6),(1,4,7),(2,5,8),
-            (0,4,8),(2,4,6)
+            (0, 1, 2), (3, 4, 5), (6, 7, 8),
+            (0, 3, 6), (1, 4, 7), (2, 5, 8),
+            (0, 4, 8), (2, 4, 6)
         ]
-        for a,b,c in combos:
+        for a, b, c in combos:
             if board[a] and board[a] == board[b] == board[c]:
                 return board[a]
         if all(cell is not None and cell != "" for cell in board):
@@ -51,23 +51,26 @@ else:
 
 initialize_app(cred, {"databaseURL": FIREBASE_DB_URL})
 
-
 # -------------------------------
 # FastAPI Setup
 # -------------------------------
-app = FastAPI(title="TicTacToe Backend")
+app = FastAPI(title="Tic Tac Toe Backend")  # ✅ Define app first
+
+origins = [
+    "http://localhost:3000",
+    "https://tic-tac-toe-ten-topaz.vercel.app",  # ✅ Your deployed frontend
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://your-vercel-domain.vercel.app",
-    "http://localhost:3000"],  # tighten in prod
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 # -------------------------------
-# Helpers
+# Helper Functions
 # -------------------------------
 def firebase_board_to_internal(raw) -> List[Optional[str]]:
     internal = [None] * 9
@@ -92,8 +95,12 @@ def internal_board_to_firebase(board: List[Optional[str]]):
 
 
 def make_default_room_dict() -> Dict[str, Any]:
-    return {"board": internal_board_to_firebase([None]*9),
-            "players": {}, "turn": "X", "winner": ""}
+    return {
+        "board": internal_board_to_firebase([None] * 9),
+        "players": {},
+        "turn": "X",
+        "winner": ""
+    }
 
 
 def ensure_room_structure(room: Dict[str, Any]) -> Dict[str, Any]:
@@ -115,9 +122,11 @@ def ensure_room_structure(room: Dict[str, Any]) -> Dict[str, Any]:
 def root():
     return {"message": "Tic Tac Toe Backend Active!"}
 
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.post("/create")
 def create_room():
@@ -162,10 +171,12 @@ def get_room(room_id: str):
 
     room = ensure_room_structure(room)
     internal_board = firebase_board_to_internal(room.get("board"))
-    return {"board": internal_board,
-            "players": room.get("players", {}),
-            "turn": room.get("turn", "X"),
-            "winner": room.get("winner", "")}
+    return {
+        "board": internal_board,
+        "players": room.get("players", {}),
+        "turn": room.get("turn", "X"),
+        "winner": room.get("winner", "")
+    }
 
 
 @app.post("/move/{room_id}")
@@ -246,7 +257,7 @@ def reset_game(room_id: str):
     if not ref.get():
         raise HTTPException(status_code=404, detail="Room not found")
     ref.update({
-        "board": internal_board_to_firebase([None]*9),
+        "board": internal_board_to_firebase([None] * 9),
         "turn": "X",
         "winner": ""
     })
