@@ -58,7 +58,8 @@ initialize_app(cred, {"databaseURL": FIREBASE_DB_URL})
 app = FastAPI(title="TicTacToe Backend")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # tighten in prod
+    allow_origins=["https://your-vercel-domain.vercel.app",
+    "http://localhost:3000"],  # tighten in prod
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

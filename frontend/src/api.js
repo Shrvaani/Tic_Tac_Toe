@@ -1,5 +1,5 @@
 // src/api.js
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://tictactoe-production-0522.up.railway.app";
 
 export async function createRoom() {
   const res = await fetch(`${BASE_URL}/create`, { method: "POST" });
